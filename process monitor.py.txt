@@ -1,0 +1,41 @@
+import wmi
+
+def log_to_file(message):
+    with open("process_monitor_log.csv", "ab") as fd:
+        fd.write(b'%s\r\n' % message)
+
+# create logfile header
+log_to_file(b'Time,User,Executable,CommandLine,PID,Parent PID,Privileges')
+
+# initiate wmi interface
+c = wmi.WMI()
+
+# create process monitor
+process_watcher = c.Win32_Process.watch_for("creation")
+
+while True:
+    try:
+        newprocess = process_watcher()
+
+        process_owner = newprocess.GetOwner()
+        process_owner = "%s\\%s" % (process_owner[0], process_owner[2])
+        create_date = newprocess.CreationDate
+        executable = newprocess.ExecutablePath
+        cmdline = newprocess.CommandLine
+        pid = newprocess.ProcessId
+        parent_pid = newprocess.ParentProcessId
+
+        privileges = 'N/A'
+
+        process_log_message = "%s,%s,%s,%s,%s,%s,%s\r\n" % (create_date, 
+                                                             process_owner, 
+                                                             executable, 
+                                                             cmdline, 
+                                                             pid, 
+                                                             parent_pid, 
+                                                             privileges)
+        
+        print(process_log_message)
+        log_to_file(process_log_message)
+    except Exception as e:
+        print("An error occurred:", e)
